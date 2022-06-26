@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<!-- saved from url=(0151)https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-CD0251EN-SkillsNetwork/labs/m3_django_orm/option_lab_create_orm_template.md.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./option_lab_create_orm_template.md_files/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="./option_lab_create_orm_template.md_files/default.min.css">
+  <style type="text/css">/* this file is used for labs on cognitiveclass.ai that were written in markdown */
+
+/* applies to images, i.e. "![]()" in markdown */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* add padding and margins */
+body {
+  padding: 10px;
+  margin: 10px;
+}
+
+/* applies to tables, i.e. "|--|--|" in markdown */
+table td,
+table th {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+/* applies to using quotes, i.e. ">" in markdown */
+blockquote {
+  background: #f9f9f9;
+  border-left: 10px solid #ccc;
+  margin: 1.5em 10px;
+  padding: 1em 10px 0.1em 10px;
+  quotes: '\201C''\201D''\2018''\2019';
+}
+
+/* the headers need some spacing */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 500;
+  padding-top: 20px;
+}
+
+/* Add padding between nested list item */
+ul > li > ul {
+  padding-bottom: 1rem;
+}
+
+.code-badge-language {
+  display: none;
+}
+.code-badge-copy-icon {
+  background: url('data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhciIgZGF0YS1pY29uPSJjb3B5IiBjbGFzcz0ic3ZnLWlubGluZS0tZmEgZmEtY29weSBmYS13LTE0IiByb2xlPSJpbWciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ0OCA1MTIiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTQzMy45NDEgNjUuOTQxbC01MS44ODItNTEuODgyQTQ4IDQ4IDAgMCAwIDM0OC4xMTggMEgxNzZjLTI2LjUxIDAtNDggMjEuNDktNDggNDh2NDhINDhjLTI2LjUxIDAtNDggMjEuNDktNDggNDh2MzIwYzAgMjYuNTEgMjEuNDkgNDggNDggNDhoMjI0YzI2LjUxIDAgNDgtMjEuNDkgNDgtNDh2LTQ4aDgwYzI2LjUxIDAgNDgtMjEuNDkgNDgtNDhWOTkuODgyYTQ4IDQ4IDAgMCAwLTE0LjA1OS0zMy45NDF6TTI2NiA0NjRINTRhNiA2IDAgMCAxLTYtNlYxNTBhNiA2IDAgMCAxIDYtNmg3NHYyMjRjMCAyNi41MSAyMS40OSA0OCA0OCA0OGg5NnY0MmE2IDYgMCAwIDEtNiA2em0xMjgtOTZIMTgyYTYgNiAwIDAgMS02LTZWNTRhNiA2IDAgMCAxIDYtNmgxMDZ2ODhjMCAxMy4yNTUgMTAuNzQ1IDI0IDI0IDI0aDg4djIwMmE2IDYgMCAwIDEtNiA2em02LTI1NmgtNjRWNDhoOS42MzJjMS41OTEgMCAzLjExNy42MzIgNC4yNDMgMS43NTdsNDguMzY4IDQ4LjM2OGE2IDYgMCAwIDEgMS43NTcgNC4yNDNWMTEyeiI+PC9wYXRoPjwvc3ZnPg==');
+  background-size: 100% 100%;
+}
+
+.code-badge {
+  bottom: 0 !important;
+  top: unset !important;
+  background: unset !important;
+}
+
+.code-badge > .code-badge-check-icon {
+  background: green;
+}
+.code-badge-check-icon {
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 0 7px;
+  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGFyaWEtaGlkZGVuPSJ0cnVlIiBmb2N1c2FibGU9ImZhbHNlIiBkYXRhLXByZWZpeD0iZmFzIiBkYXRhLWljb249ImNoZWNrIiBjbGFzcz0ic3ZnLWlubGluZS0tZmEgZmEtY2hlY2sgZmEtdy0xNiIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgc3R5bGU9IiYjMTA7ICAgIGNvbG9yOiAjMmFmZjMyOyYjMTA7Ij48cGF0aCBmaWxsPSJjdXJyZW50Q29sb3IiIGQ9Ik0xNzMuODk4IDQzOS40MDRsLTE2Ni40LTE2Ni40Yy05Ljk5Ny05Ljk5Ny05Ljk5Ny0yNi4yMDYgMC0zNi4yMDRsMzYuMjAzLTM2LjIwNGM5Ljk5Ny05Ljk5OCAyNi4yMDctOS45OTggMzYuMjA0IDBMMTkyIDMxMi42OSA0MzIuMDk1IDcyLjU5NmM5Ljk5Ny05Ljk5NyAyNi4yMDctOS45OTcgMzYuMjA0IDBsMzYuMjAzIDM2LjIwNGM5Ljk5NyA5Ljk5NyA5Ljk5NyAyNi4yMDYgMCAzNi4yMDRsLTI5NC40IDI5NC40MDFjLTkuOTk4IDkuOTk3LTI2LjIwNyA5Ljk5Ny0zNi4yMDQtLjAwMXoiLz48L3N2Zz4=');
+  background-size: 100% 100%;
+}
+</style></head>
+  <body data-new-gr-c-s-check-loaded="14.1065.0" data-gr-ext-installed="">
+    <img src="./option_lab_create_orm_template.md_files/IDSNlogo.png" width="200" height="200">
+    <h1>Optional: Create a Standalone Django ORM Project Template</h1>
+    <p><strong>Estimated time needed:</strong> 20 minutes</p>
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Create a standalone Django ORM project and app</li>
+      <li>Save this project as a template to learn and build more complex Django ORM apps</li>
+    </ul>
+    <h1>Start PostgreSQL in Theia</h1>
+    <p>
+      <code>PostgreSQL</code>, also known as <code>Postgres</code>, is an open-source relational database management system and it is one of the main databases
+      Django uses.
+    </p>
+    <p>
+      If you are using the Theia environment hosted by <a href="https://labs.cognitiveclass.ai/?utm_medium=Exinfluencer&amp;utm_source=Exinfluencer&amp;utm_content=000026UJ&amp;utm_term=10006555&amp;utm_id=NA-SkillsNetwork-Channel-SkillsNetworkCoursesIBMCD0251ENSkillsNetwork21879158-2021-01-01" target="_blank" rel="external">Skills Network Labs</a>,
+      a pre-installed PostgreSQL instance is provided for you which can be started with one simple command line.
+    </p>
+    <p>You can skip this step if you have already started it in previous labs.</p>
+    <ul>
+      <li>If the terminal was not open, go to <code>Terminal &gt; New Terminal</code> and run:</li>
+    </ul>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">ebnf</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-ebnf"><span class="hljs-attribute">start_postgres</span>
+</code></pre>
+    <p></p>
+    <ul>
+      <li>Once PostgreSQL is started, you can check the server connection information in the terminal. You need to</li>
+    </ul>
+    <p>
+      save the connection information such as generated <code>username</code>, <code>password</code>, and <code>host</code>, etc, which will be used to configure the
+      Django app to connect to this database.
+    </p>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">pgsql</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-pgsql">Starting your Postgres <span class="hljs-keyword">database</span>....
+This process can take up <span class="hljs-keyword">to</span> a minute.
+      
+Postgres <span class="hljs-keyword">database</span> started, waiting <span class="hljs-keyword">for</span> <span class="hljs-keyword">all</span> services <span class="hljs-keyword">to</span> be ready....
+      
+Your Postgres <span class="hljs-keyword">database</span> <span class="hljs-keyword">is</span> now ready <span class="hljs-keyword">to</span> use <span class="hljs-keyword">and</span> available <span class="hljs-keyword">with</span> username: postgres <span class="hljs-keyword">password</span>: Nzg3Mi15bHVvLTIz
+
+You can <span class="hljs-keyword">access</span> your Postgres <span class="hljs-keyword">database</span> via:
+ • The browser at: https://yluo<span class="hljs-number">-5050.</span>theiadocker<span class="hljs-number">-1.</span>proxy.cognitiveclass.ai
+ • CommandLine: psql <span class="hljs-comment">--username=postgres --host=localhost</span>
+
+</code></pre>
+    <ul>
+      <li>Django needs an adapter called <code>Psycopg</code> as an interface to work with PostgreSQL, you can install it using the following command:</li>
+    </ul>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">gcode</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-gcode">pytho<span class="hljs-symbol">n3</span> -m pip i<span class="hljs-symbol">nstall psycopg2</span>-bi<span class="hljs-symbol">nary
+
+</span></code></pre>
+    <p></p>
+    <h1>Create a Simplified Django ORM Project</h1>
+    <p>Before starting the lab, make sure your current Theia directory is <code>/home/project</code>.</p>
+    <p>First, we need to install Django related packages if not installed previously.</p>
+    <ul>
+      <li>Go to terminal and run:</li>
+    </ul>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">cmake</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-cmake">python3 -m pip <span class="hljs-keyword">install</span> Django
+</code></pre>
+    <p></p>
+    <p>
+      In this lab, instead of creating a complete Django web project and app using command-line utilities,
+      you will be creating a simplified app with only ORM component from scratch.
+    </p>
+    <p>Within the ORM-only app, you can define your models and easily perform CRUD operations on your model objects.</p>
+    <p>
+      More importantly, you can create and run Python script files to do that
+      instead of typing Python code into <code>shell</code> line by line.
+    </p>
+    <p>Let's start by creating an empty project folder</p>
+    <ul>
+      <li>In the Theia menu, click <code>File &gt; New Folder</code> and type <code>ormtemplate</code> which acts as the container folder</li>
+    </ul>
+    <p>for an empty Django project.</p>
+    <ul>
+      <li>Right-click the <code>ormtemplate</code> folder, and create a subfolder <code>standalone</code> which acts as the container</li>
+    </ul>
+    <p>folder for an empty Django app called <code>standalone</code></p>
+    <ul>
+      <li>Right-click the <code>ormtemplate</code> folder again, and create an empty <code>settings.py</code> file and a <code>manage.py</code> file</li>
+    </ul>
+    <p>
+      Next, we will add the content to <code>manage.py</code> file acting as a command-line interface managing our Django
+      project
+    </p>
+    <ul>
+      <li>Open the empty <code>manage.py</code> file, and copy and paste the following code snippet</li>
+    </ul>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-python"><span class="hljs-keyword"><span class="hljs-keyword">import</span></span> os
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> sys
+
+<span class="hljs-keyword"><span class="hljs-keyword">if</span></span> __name__ == <span class="hljs-string"><span class="hljs-string">"__main__"</span></span>:
+    os.environ.setdefault(<span class="hljs-string"><span class="hljs-string">"DJANGO_SETTINGS_MODULE"</span></span>, <span class="hljs-string"><span class="hljs-string">"settings"</span></span>)
+    <span class="hljs-keyword"><span class="hljs-keyword">try</span></span>:
+        <span class="hljs-keyword"><span class="hljs-keyword">from</span></span> django.core.management <span class="hljs-keyword"><span class="hljs-keyword">import</span></span> execute_from_command_line
+    <span class="hljs-keyword"><span class="hljs-keyword">except</span></span> ImportError:
+        <span class="hljs-keyword"><span class="hljs-keyword">try</span></span>:
+            <span class="hljs-keyword"><span class="hljs-keyword">import</span></span> django
+        <span class="hljs-keyword"><span class="hljs-keyword">except</span></span> ImportError:
+            <span class="hljs-keyword"><span class="hljs-keyword">raise</span></span> ImportError(
+                <span class="hljs-string"><span class="hljs-string">"Couldn't import Django. Are you sure it's installed and "</span></span>
+                <span class="hljs-string"><span class="hljs-string">"available on your PYTHONPATH environment variable? Did you "</span></span>
+                <span class="hljs-string"><span class="hljs-string">"forget to activate a virtual environment?"</span></span>
+            )
+        <span class="hljs-keyword"><span class="hljs-keyword">raise</span></span>
+    execute_from_command_line(sys.argv)
+</code></pre>
+    <p></p>
+    <p>
+      The code snippet be added to the <code>manage.py</code> file as the setting module of our <code>ormtemplate</code> project and be able
+      to execute Django built-in commands such as migrations.
+    </p>
+    <p>Next, let's add a simple database settings to <code>settings.py</code></p>
+    <ul>
+      <li>Open the empty <code>settings.py</code>, copy and paste the following code snippet</li>
+    </ul>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-python"><span class="hljs-comment"><span class="hljs-comment"># PostgreSQL</span></span>
+DATABASES = {
+    <span class="hljs-string"><span class="hljs-string">'default'</span></span>: {
+        <span class="hljs-string"><span class="hljs-string">'ENGINE'</span></span>: <span class="hljs-string"><span class="hljs-string">'django.db.backends.postgresql_psycopg2'</span></span>,
+        <span class="hljs-string"><span class="hljs-string">'NAME'</span></span>: <span class="hljs-string"><span class="hljs-string">'postgres'</span></span>,
+        <span class="hljs-string"><span class="hljs-string">'USER'</span></span>: <span class="hljs-string"><span class="hljs-string">'postgres'</span></span>,
+        <span class="hljs-string"><span class="hljs-string">'PASSWORD'</span></span>: <span class="hljs-string"><span class="hljs-string">'Place with your password generated in Step 1'</span></span>,
+        <span class="hljs-string"><span class="hljs-string">'HOST'</span></span>: <span class="hljs-string"><span class="hljs-string">'localhost'</span></span>,
+        <span class="hljs-string"><span class="hljs-string">'PORT'</span></span>: <span class="hljs-string"><span class="hljs-string">'5432'</span></span>,
+    }
+}
+
+INSTALLED_APPS = (
+    <span class="hljs-string"><span class="hljs-string">'standalone'</span></span>,
+)
+
+SECRET_KEY = <span class="hljs-string"><span class="hljs-string">'SECRET KEY for this Django Project'</span></span>
+</code></pre>
+    <p></p>
+    <p>
+      The above code snippet adds <code>standalone</code> app as an installed app and adds the default database
+      to be the pre-installed PostgreSQL we created in Step 1.
+    </p>
+    <p>You just need to update the <code>PASSWORD</code> field to be the password generated in Step 1.</p>
+    <p>So far we have created a very simple Django project. Next let's add content to our <code>standalone</code> app.</p>
+    <ul>
+      <li>Click <code>ormtemplate/standalone</code> folder and</li>
+    </ul>
+    <p>
+      create an empty <code>models.py</code> containing model definitions and a folder named <code>migrations</code>
+      containing migration scripts in <code>standalone</code> app.
+    </p>
+    <p>After that, your app structure should look like the following:</p>
+    <p>
+      <img src="./option_lab_create_orm_template.md_files/optional_lab_project.png" alt="image">
+    </p>
+    <ul>
+      <li>Now your Django <code>standalone</code> app is ready and you can start test if the <code>standalone</code> app is working.</li>
+    </ul>
+    <h1>Test the standalone App</h1>
+    <ul>
+      <li>Open <code>orm/models.py</code> file and copy and paste the following code snippet to define a simple <code>Test</code> model</li>
+    </ul>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-python"><span class="hljs-keyword"><span class="hljs-keyword">from</span></span> django.db <span class="hljs-keyword"><span class="hljs-keyword">import</span></span> models
+
+<span class="hljs-comment"><span class="hljs-comment"># Test model</span></span>
+<span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">Test</span></span></span><span class="hljs-class">(</span><span class="hljs-params"><span class="hljs-class"><span class="hljs-params">models.Model</span></span></span><span class="hljs-class">):</span></span>
+    name = models.CharField(max_length=<span class="hljs-number"><span class="hljs-number">30</span></span>)
+
+</code></pre>
+    <p></p>
+    <p>Next, we can ask <code>ormtemplate</code> app to generate the <code>Test</code> table by running migration command-lines.</p>
+    <ul>
+      <li><code>cd</code> into <code>ormtemplate</code> folder</li>
+    </ul>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">bash</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-bash"><span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> ormtemplate
+</code></pre>
+    <p></p>
+    <p>and now your current Theia folder should be <code>/home/project/ormtemplate</code> shown in the terminal</p>
+    <ul>
+      <li>Then, you need to generate migration scripts for <code>standalone</code> app</li>
+    </ul>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">vim</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-vim"><span class="hljs-keyword">python3</span> manage.<span class="hljs-keyword">py</span> makemigrations standalone
+</code></pre>
+    <p></p>
+    <p>and you should see migration scripts generated for your <code>Test</code> model</p>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">awk</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-awk">Migrations <span class="hljs-keyword">for</span> <span class="hljs-string">'standalone'</span>:
+  standalone<span class="hljs-regexp">/migrations/</span><span class="hljs-number">0001</span>_initial.py
+    - Create model Test
+</code></pre>
+    <p>
+      Note, if you see errors like
+      <code>django.db.utils.OperationalError: FATAL: password authentication failed for user "postgres"</code>
+      please re-run <code>start_postgres</code> to reset the <code>PostgreSQL</code> server and use the new password in <code>settings.py</code>.
+    </p>
+    <ul>
+      <li>and run migration</li>
+    </ul>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">vim</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-vim"><span class="hljs-keyword">python3</span> manage.<span class="hljs-keyword">py</span> migrate
+</code></pre>
+    <p></p>
+    <p>Next, you can write some Python testing code in a Python script file (<code>*.py</code>) to test your model.</p>
+    <ul>
+      <li>
+        <p>Click the <code>ormtemplate</code> folder and create a new file called <code>test.py</code></p>
+      </li>
+      <li>
+        <p>Open the empty <code>test.py</code> and add following code snippet to test your <code>test</code> model:</p>
+      </li>
+    </ul>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-python"><span class="hljs-comment"><span class="hljs-comment"># Django specific settings</span></span>
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> inspect
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> os
+os.environ.setdefault(<span class="hljs-string"><span class="hljs-string">"DJANGO_SETTINGS_MODULE"</span></span>, <span class="hljs-string"><span class="hljs-string">"settings"</span></span>)
+<span class="hljs-keyword"><span class="hljs-keyword">from</span></span> django.db <span class="hljs-keyword"><span class="hljs-keyword">import</span></span> connection
+<span class="hljs-comment"><span class="hljs-comment"># Ensure settings are read</span></span>
+<span class="hljs-keyword"><span class="hljs-keyword">from</span></span> django.core.wsgi <span class="hljs-keyword"><span class="hljs-keyword">import</span></span> get_wsgi_application
+application = get_wsgi_application()
+<span class="hljs-comment"><span class="hljs-comment"># Your application specific imports</span></span>
+<span class="hljs-keyword"><span class="hljs-keyword">from</span></span> standalone.models <span class="hljs-keyword"><span class="hljs-keyword">import</span></span> Test
+
+
+<span class="hljs-comment"><span class="hljs-comment"># Delete all data</span></span>
+<span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">clean_data</span></span></span><span class="hljs-function">():</span></span>
+    Test.objects.<span class="hljs-built_in"><span class="hljs-built_in">all</span></span>().delete()
+
+<span class="hljs-comment"><span class="hljs-comment"># Test Django Model Setup</span></span>
+<span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">test_setup</span></span></span><span class="hljs-function">():</span></span>
+    <span class="hljs-keyword"><span class="hljs-keyword">try</span></span>:
+        clean_data()
+        test = Test(name=<span class="hljs-string"><span class="hljs-string">"name"</span></span>)
+        test.save()
+        <span class="hljs-comment"><span class="hljs-comment"># Check test table is not empty</span></span>
+        <span class="hljs-keyword"><span class="hljs-keyword">assert</span></span> Test.objects.count() &gt; <span class="hljs-number"><span class="hljs-number">0</span></span>
+        <span class="hljs-built_in"><span class="hljs-built_in">print</span></span>(<span class="hljs-string"><span class="hljs-string">"Django Model setup completed."</span></span>)
+    <span class="hljs-keyword"><span class="hljs-keyword">except</span></span> AssertionError <span class="hljs-keyword"><span class="hljs-keyword">as</span></span> exception:
+        <span class="hljs-built_in"><span class="hljs-built_in">print</span></span>(<span class="hljs-string"><span class="hljs-string">"Django Model setup failed with error: "</span></span>)
+        <span class="hljs-keyword"><span class="hljs-keyword">raise</span></span>(exception)
+    <span class="hljs-keyword"><span class="hljs-keyword">except</span></span>:
+        <span class="hljs-built_in"><span class="hljs-built_in">print</span></span>(<span class="hljs-string"><span class="hljs-string">"Unexpected error"</span></span>)
+
+test_setup()
+
+</code></pre>
+    <p></p>
+    <p>
+      The above code snippet first cleans the database and then inserts a test object.
+      Then it checks if the test object was inserted correctly.
+    </p>
+    <ul>
+      <li>At last, in the terminal, run the <code>test.py</code>:</li>
+    </ul>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">vim</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-vim"><span class="hljs-keyword">python3</span> test.<span class="hljs-keyword">py</span>
+
+</code></pre>
+    <p></p>
+    <p>and you should see</p>
+    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">arduino</div>
+        <div title="Copy to clipboard">
+            <i class="code-badge-copy-icon code-badge-copy-icon"></i>
+        </div>
+     </div><code class="hljs language-arduino">Django Model setup completed.
+</code></pre>
+    <p>
+      Now you have successfully created a standalone Django ORM app and tested it with a simple <code>Test</code>
+      model. You also get yourself familiar with Django app structure by creating them from scratch.
+    </p>
+    <p>Next, you could download and save this project locally as a template for your future learning and Django ORM development activities.</p>
+    <ul>
+      <li>Right-click the root folder <code>ormtemplate</code>, and click <code>Download</code> to save your workspace.</li>
+    </ul>
+    <p>
+      For your practice, you could import it to a new Theia environment or your local Python environment as a starting point
+      to develop more complex Django ORM models.
+    </p>
+    <h1>Summary</h1>
+    <p>
+      In this lab, you have created a standalone Django ORM app without creating a full Django web project.
+      You could use this simple ORM app as a template for you to learn Django ORM as well as build more
+      complex Django ORM apps in the future.
+    </p>
+    <h2>Author(s)</h2>
+    <h4>[Yan Luo](linkedin.com/in/yan-luo-96288783)</h4>
+    <h4></h4>
+    <h2>Changelog</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Version</th>
+          <th>Changed by</th>
+          <th>Change Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>30-Nov-2020</td>
+          <td>1.0</td>
+          <td>Yan Luo</td>
+          <td>Initial version created</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <h2></h2>
+    <h3 align="center">© IBM Corporation 2020. All rights reserved.</h3>
+    <h3></h3>
+    <script>window.addEventListener('load', function() {
+snFaculty.inject();
+});</script>
+    <script src="./option_lab_create_orm_template.md_files/inject.43989f87.js"></script>
+    <script src="./option_lab_create_orm_template.md_files/highlight.min.js"></script>
+    <script src="./option_lab_create_orm_template.md_files/highlightjs-badge.min.js"></script>
+  
+
+<style>
+@media print {
+   .code-badge { display: none; }
+}
+    .code-badge-pre {
+        position: relative;
+    }
+    .code-badge {
+        display: flex;
+        flex-direction: row;
+        white-space: normal;
+        background: transparent;
+        background: #333;
+        color: white;
+        font-size: 0.875em;
+        opacity: 0.5;
+        transition: opacity linear 0.5s;
+        border-radius: 0 0 0 7px;
+        padding: 5px 8px 5px 8px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .code-badge.active {
+        opacity: 0.8;
+    }
+
+    .code-badge:hover {
+        opacity: .95;
+    }
+
+    .code-badge a,
+    .code-badge a:hover {
+        text-decoration: none;
+    }
+
+    .code-badge-language {
+        margin-right: 10px;
+        font-weight: 600;
+        color: goldenrod;
+    }
+    .code-badge-copy-icon {
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0 7px;
+        margin-top:2;
+    }
+    .fa.text-success:{ color: limegreen !important }
+</style><div id="CodeBadgeTemplate" style="display:none">
+    <div class="code-badge">
+        <div class="code-badge-language">{{language}}</div>
+        <div title="Copy to clipboard">
+            <i class="{{copyIconClass}} code-badge-copy-icon"></i>
+        </div>
+     </div>
+</div></body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
