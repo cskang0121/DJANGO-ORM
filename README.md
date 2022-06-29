@@ -1,4 +1,4 @@
-# DJANGO-ORM
+## DJANGO-ORM (Project Description)
 
-- This repository is for self-learning purposes 
+- This repository is for self-learning purposes
 - Topic : Django Object-Relational Mapping
